@@ -1,1 +1,248 @@
-{"id":7,"title":{"ru":"Уровень 4: ЕСЛИ","en":"Level 4: IF"},"description":{"ru":"Освой базовые проверки с помощью функции ЕСЛИ","en":"Practice simple conditional checks with IF"},"difficulty":"intermediate","exercises":[{"id":"if-basic","task":{"ru":"Используй ЕСЛИ, чтобы проверить: если продажи препаратов >50, выводи «Высокое», иначе «Низкое». Для ячейки B2 запиши =ЕСЛИ(A2>50;\"Высокое\";\"Низкое\") или =IF(A2>50,\"Высокое\",\"Низкое\"). Первое значение в скобках — само условие, второе — результат при истине, третье — при ложном условии.","en":"Use IF to check whether drug sales are greater than 50: return \"Высокое\" if true, otherwise \"Низкое\". In B2 enter =IF(A2>50,\"Высокое\",\"Низкое\") or =ЕСЛИ(A2>50;\"Высокое\";\"Низкое\"). The first argument is the condition to test, the next is the result if true, and the last one when false."},"data":[["Продажи препаратов (тыс. руб.)","Статус","Комментарий"],[60,"",""],[45,"",""],[72,"",""]],"expectedFormula":"=IF(A2>50,\"Высокое\",\"Низкое\")","alternateFormulas":["=IF(A2>50,\"Высокое\",\"Низкое\")","=ЕСЛИ(A2>50;\"Высокое\";\"Низкое\")"],"resultCell":"B2","hint":{"ru":"Формулы: =ЕСЛИ(A2>50;\"Высокое\";\"Низкое\") / =IF(A2>50,\"Высокое\",\"Низкое\").","en":"Formulas: =IF(A2>50,\"Высокое\",\"Низкое\") / =ЕСЛИ(A2>50;\"Высокое\";\"Низкое\")."},"points":150,"explanation":{"ru":"ЕСЛИ проверяет условие и возвращает разные значения в зависимости от результата","en":"IF checks condition and returns different values based on result"}},{"id":"if-stock","task":{"ru":"Определи, нужно ли пополнить запасы препаратов на складе. Если остаток в B2 меньше 100, выводи «Заказать», иначе «Достаточно».","en":"Decide whether to restock drugs at the warehouse: if the stock in B2 is below 100, return \"Заказать\", otherwise \"Достаточно\"."},"data":[["Препарат","Остаток (кг)","Решение","Комментарий"],["Таблетки 200 мг",85,"",""],["Капсулы 400 мг",120,"",""],["Суспензия",60,""]],"expectedFormula":"=ЕСЛИ(B2<100;\"Заказать\";\"Достаточно\")","alternateFormulas":["=ЕСЛИ(B2<100;\"Заказать\";\"Достаточно\")","=IF(B2<100,\"Заказать\",\"Достаточно\")"],"resultCell":"C2","hint":{"ru":"Полные формулы: =ЕСЛИ(B2<100;\"Заказать\";\"Достаточно\") / =IF(B2<100,\"Заказать\",\"Достаточно\").","en":"Use =IF(B2<100,\"Заказать\",\"Достаточно\") or =ЕСЛИ(B2<100;\"Заказать\";\"Достаточно\")."},"points":180,"explanation":{"ru":"ЕСЛИ позволяет быстро отметить товары, которые нужно дозаказать.","en":"IF flags items that need to be reordered."}},{"id":"if-attendance","task":{"ru":"Проверь качество производства: если процент качества в B2 не ниже 90%, выводи «Отлично», иначе «Нужно подтянуть».","en":"Check production quality: if the quality percentage in B2 is at least 90%, return \"Отлично\", otherwise \"Нужно подтянуть\"."},"data":[["Смена","Качество, %","Оценка","Комментарий"],["Утренняя",94,"",""],["Дневная",88,"",""],["Ночная",91,"",""]],"expectedFormula":"=ЕСЛИ(B2>=90;\"Отлично\";\"Нужно подтянуть\")","alternateFormulas":["=ЕСЛИ(B2>=90;\"Отлично\";\"Нужно подтянуть\")","=IF(B2>=90,\"Отлично\",\"Нужно подтянуть\")"],"resultCell":"C2","hint":{"ru":"Формулы: =ЕСЛИ(B2>=90;\"Отлично\";\"Нужно подтянуть\") / =IF(B2>=90,\"Отлично\",\"Нужно подтянуть\").","en":"Formulas: =IF(B2>=90,\"Отлично\",\"Нужно подтянуть\") / =ЕСЛИ(B2>=90;\"Отлично\";\"Нужно подтянуть\")."},"points":180,"explanation":{"ru":"Одна формула ЕСЛИ помогает быстро оценить качество производства.","en":"A single IF formula quickly classifies the production quality."}}],"unlockCondition":{"type":"complete_level","level":6},"rewards":{"points":550,"badge":"if_master","title":{"ru":"Мастер условий","en":"Condition Master"}}}
+{
+  "id": 7,
+  "title": {
+    "ru": "Уровень 7: СРЗНАЧЕСЛИМН",
+    "en": "Level 7: AVERAGEIFS"
+  },
+  "description": {
+    "ru": "Вычисляй средние значения по нескольким условиям с помощью СРЗНАЧЕСЛИ и СРЗНАЧЕСЛИМН",
+    "en": "Calculate averages with one or multiple conditions using AVERAGEIF and AVERAGEIFS"
+  },
+  "difficulty": "intermediate",
+  "exercises": [
+    {
+      "id": "averageif-department",
+      "task": {
+        "ru": "Вычисли средний рейтинг сотрудников отдела «Продажи» со статусом «Активен». Используй =СРЗНАЧЕСЛИМН(D2:D6;B2:B6;\"Продажи\";C2:C6;\"Активен\") или =AVERAGEIFS(D2:D6,B2:B6,\"Продажи\",C2:C6,\"Активен\").\n\nD2:D6 — диапазон, для которого вычисляем среднее (рейтинг).\nB2:B6 — диапазон, где проверяем условие 1 (отдел).\n\"Продажи\" — условие 1.\nC2:C6 — диапазон, где проверяем условие 2 (статус).\n\"Активен\" — условие 2.",
+        "en": "Calculate the average score for active Sales employees using =AVERAGEIFS(D2:D6,B2:B6,\"Продажи\",C2:C6,\"Активен\") (or the Russian variant).\n\nD2:D6 is the range to average (rating).\nB2:B6 is the range checked for condition 1 (department).\n\"Продажи\" is condition 1.\nC2:C6 is the range checked for condition 2 (status).\n\"Активен\" is condition 2."
+      },
+      "data": [
+        [
+          "Сотрудник",
+          "Отдел",
+          "Статус",
+          "Рейтинг",
+          "Итого"
+        ],
+        [
+          "Иванов",
+          "Продажи",
+          "Активен",
+          88,
+          ""
+        ],
+        [
+          "Петров",
+          "Маркетинг",
+          "Активен",
+          74,
+          ""
+        ],
+        [
+          "Сидоров",
+          "Продажи",
+          "Активен",
+          91,
+          ""
+        ],
+        [
+          "Николаева",
+          "Логистика",
+          "Активен",
+          79,
+          ""
+        ],
+        [
+          "Попов",
+          "Продажи",
+          "Стажировка",
+          85,
+          ""
+        ]
+      ],
+      "expectedFormula": "=AVERAGEIFS(D2:D6,B2:B6,\"Продажи\",C2:C6,\"Активен\")",
+      "alternateFormulas": [
+        "=AVERAGEIFS(D2:D6;B2:B6;\"Продажи\";C2:C6;\"Активен\")",
+        "=AVERAGEIFS(D2:D6,B2:B6,\"Продажи\",C2:C6,\"Активен\")",
+        "=СРЗНАЧЕСЛИМН(D2:D6;B2:B6;\"Продажи\";C2:C6;\"Активен\")"
+      ],
+      "resultCell": "E2",
+      "hint": {
+        "ru": "СРЗНАЧЕСЛИМН принимает диапазон средних значений и пары диапазон/критерий.",
+        "en": "AVERAGEIFS expects the average range followed by range/criterion pairs."
+      },
+      "points": 170,
+      "explanation": {
+        "ru": "Формула усредняет рейтинг только для сотрудников отдела «Продажи» со статусом «Активен».",
+        "en": "The formula averages the score only for Sales employees whose status is Active."
+      }
+    },
+    {
+      "id": "averageif-threshold",
+      "task": {
+        "ru": "Определи среднюю выручку заказов выше 50 000 и со статусом «Оплачен»: используй =СРЗНАЧЕСЛИМН(C2:C8;C2:C8;\">50000\";D2:D8;\"Оплачен\") или =AVERAGEIFS(C2:C8,C2:C8,\">50000\",D2:D8,\"Оплачен\").",
+        "en": "Determine the average revenue for orders above 50 000 whose status is \"Оплачен\" using =AVERAGEIFS(C2:C8,C2:C8,\">50000\",D2:D8,\"Оплачен\") (or the Russian formula)."
+      },
+      "data": [
+        [
+          "Заказ",
+          "Аптечная сеть",
+          "Выручка",
+          "Статус",
+          "Итого"
+        ],
+        [
+          "ORD-101",
+          "Сеть А",
+          42000,
+          "Оплачен",
+          ""
+        ],
+        [
+          "ORD-102",
+          "Сеть Б",
+          68000,
+          "Оплачен",
+          ""
+        ],
+        [
+          "ORD-103",
+          "Сеть В",
+          75500,
+          "В ожидании",
+          ""
+        ],
+        [
+          "ORD-104",
+          "Сеть Д",
+          31000,
+          "Оплачен",
+          ""
+        ],
+        [
+          "ORD-105",
+          "Сеть Г",
+          84500,
+          "Оплачен",
+          ""
+        ],
+        [
+          "ORD-106",
+          "Сеть А",
+          52000,
+          "Отменён",
+          ""
+        ],
+        [
+          "ORD-107",
+          "Сеть Б",
+          47000,
+          "Оплачен",
+          ""
+        ]
+      ],
+      "expectedFormula": "=AVERAGEIFS(C2:C8,C2:C8,\">50000\",D2:D8,\"Оплачен\")",
+      "alternateFormulas": [
+        "=AVERAGEIFS(C2:C8;C2:C8;\">50000\";D2:D8;\"Оплачен\")",
+        "=AVERAGEIFS(C2:C8,C2:C8,\">50000\",D2:D8,\"Оплачен\")",
+        "=СРЗНАЧЕСЛИМН(C2:C8;C2:C8;\">50000\";D2:D8;\"Оплачен\")"
+      ],
+      "resultCell": "E2",
+      "hint": {
+        "ru": "СРЗНАЧЕСЛИМН позволяет добавить несколько критериев: диапазон средних, затем пары диапазон/условие.",
+        "en": "AVERAGEIFS takes the average range first, then the range/criterion pairs for each condition."
+      },
+      "points": 180,
+      "explanation": {
+        "ru": "Формула усредняет доходы заказов выше 50 000, оставляя только строки со статусом «Оплачен».",
+        "en": "The formula averages the revenue for orders above 50 000 while filtering rows whose status is Paid."
+      }
+    },
+    {
+      "id": "averageifs-multi",
+      "task": {
+        "ru": "Найди средний срок доставки препаратов для региона North со статусом «Готово»: =СРЗНАЧЕСЛИМН(D2:D7;B2:B7;\"North\";C2:C7;\"Готово\").",
+        "en": "Find the average drug delivery time for region North and status \"Готово\" using =AVERAGEIFS(D2:D7,B2:B7,\"North\",C2:C7,\"Готово\")."
+      },
+      "data": [
+        [
+          "Заказ",
+          "Регион",
+          "Статус",
+          "Срок, дней",
+          "Итого"
+        ],
+        [
+          "ORD-201",
+          "North",
+          "Готово",
+          5,
+          ""
+        ],
+        [
+          "ORD-202",
+          "West",
+          "В работе",
+          7,
+          ""
+        ],
+        [
+          "ORD-203",
+          "North",
+          "Готово",
+          6,
+          ""
+        ],
+        [
+          "ORD-204",
+          "South",
+          "Готово",
+          4,
+          ""
+        ],
+        [
+          "ORD-205",
+          "North",
+          "В работе",
+          8,
+          ""
+        ],
+        [
+          "ORD-206",
+          "North",
+          "Готово",
+          5,
+          ""
+        ]
+      ],
+      "expectedFormula": "=AVERAGEIFS(D2:D7,B2:B7,\"North\",C2:C7,\"Готово\")",
+      "alternateFormulas": [
+        "=AVERAGEIFS(D2:D7;B2:B7;\"North\";C2:C7;\"Готово\")",
+        "=AVERAGEIFS(D2:D7,B2:B7,\"North\",C2:C7,\"Готово\")",
+        "=СРЗНАЧЕСЛИМН(D2:D7;B2:B7;\"North\";C2:C7;\"Готово\")"
+      ],
+      "resultCell": "E2",
+      "hint": {
+        "ru": "СРЗНАЧЕСЛИМН принимает диапазон средних и пары «диапазон-условие».",
+        "en": "AVERAGEIFS takes the average range followed by pairs of criteria range and criteria."
+      },
+      "points": 200,
+      "explanation": {
+        "ru": "Функция накладывает несколько фильтров перед вычислением среднего значения.",
+        "en": "The function applies multiple filters before calculating the mean."
+      }
+    }
+  ],
+  "unlockCondition": {
+    "type": "complete_level",
+    "level": 5
+  },
+  "rewards": {
+    "points": 520,
+    "badge": "averageif_master",
+    "title": {
+      "ru": "Мастер СРЗНАЧЕСЛИ",
+      "en": "AVERAGEIF Master"
+    }
+  }
+}
