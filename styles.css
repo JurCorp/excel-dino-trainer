@@ -1,0 +1,672 @@
+:root{
+  --bg:#f6f2e4;
+  --card:#fff7d9;
+  --accent:#f5c82a;
+  --muted:#666;
+  --primary:#2c3e50;
+  --success:#27ae60;
+}
+*{box-sizing:border-box}
+body{
+  font-family:Inter, system-ui, Arial;
+  background:var(--bg);
+  margin:0;
+  padding:18px;
+  display:flex;
+  justify-content:center;
+  min-height:100vh;
+  align-items:center;
+}
+.wrap{
+  width:100%;
+  max-width:720px;
+}
+h1{margin:0 0 12px}
+.card{
+  background:var(--card);
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+#tableWrap table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+/* Таблица как в Excel */
+.excel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Calibri', Arial, sans-serif;
+  table-layout: fixed;
+}
+.excel-table th,
+.excel-table td {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #B0B0B0 !important;
+  padding: 4px;
+  text-align: left;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.excel-table th {
+  background-color: #ffffff;
+  font-weight: bold;
+}
+/* Серые заголовки колонок (A, B, C...) */
+.excel-table th.col-header {
+  background-color: #E6E6E6 !important;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #B0B0B0 !important;
+  width: 2.1em;
+  height: 0.61em;
+  padding: 4px;
+  font-size: 12px;
+}
+/* Левая верхняя ячейка (пустая) */
+.excel-table th.row-header:first-child {
+  background-color: #E6E6E6 !important;
+  border: 1px solid #B0B0B0 !important;
+}
+
+/* Стили для markdown в информационных блоках */
+#task-text {
+  line-height: 1.6;
+}
+
+#task-text h1 {
+  font-size: 1.5em;
+  margin: 1em 0 0.5em 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+#task-text h2 {
+  font-size: 1.3em;
+  margin: 0.8em 0 0.4em 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+#task-text h3 {
+  font-size: 1.1em;
+  margin: 0.6em 0 0.3em 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+#task-text ul {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+#task-text li {
+  margin: 0.3em 0;
+  list-style-type: disc;
+}
+
+/* Уменьшенные отступы для уровня 12 */
+body.level-12 #task-text {
+  line-height: 1.4;
+}
+
+body.level-12 #task-text h1 {
+  margin: 0.5em 0 0.3em 0;
+  padding-bottom: 0.2em;
+}
+
+body.level-12 #task-text h2 {
+  margin: 0.4em 0 0.2em 0;
+  padding-bottom: 0.1em;
+}
+
+body.level-12 #task-text h3 {
+  margin: 0.3em 0 0.15em 0;
+}
+
+body.level-12 #task-text p {
+  margin: 0.3em 0;
+}
+
+body.level-12 #task-text ul {
+  margin: 0.3em 0;
+}
+
+body.level-12 #task-text li {
+  margin: 0.15em 0;
+}
+
+#task-text strong {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+#task-text br {
+  line-height: 1.5;
+}
+/* Серые заголовки строк (1, 2, 3...) - уже */
+.excel-table td.row-header,
+.excel-table th.row-header {
+  background-color: #E6E6E6;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #B0B0B0 !important;
+  width: 1.5em;
+  height: 0.61em;
+  padding: 4px;
+  font-size: 12px;
+}
+/* Ячейки данных одинакового размера */
+.excel-table td:not(.row-header) {
+  width: 2.1em;
+  height: 0.61em;
+  padding: 4px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid #B0B0B0 !important;
+  min-width: 2.1em;
+  max-width: 2.1em;
+}
+.excel-table th:not(.col-header):not(.row-header) {
+  border: 1px solid #B0B0B0 !important;
+}
+.excel-table td:focus {
+  outline: 2px solid #0078d4;
+  outline-offset: -2px;
+}
+
+/* Выделение диапазона (как в Excel) */
+.excel-table td.highlighted {
+  background-color: #d0e8f7 !important;
+  border: 2px dashed #0078d4 !important;
+}
+
+.excel-table td.range-start {
+  background-color: #b8dcef !important;
+}
+
+.excel-table td.range-end {
+  background-color: #b8dcef !important;
+}
+
+#tableWrap th, #tableWrap td{
+  border:1px solid rgba(0,0,0,0.08);
+  padding:8px;
+  text-align:center;
+}
+#tableWrap th{
+  background:rgba(0,0,0,0.03);
+}
+input[type="text"]{
+  width:100%;
+  padding:8px;
+  margin:8px 0;
+  border-radius:6px;
+  border:1px solid rgba(0,0,0,0.12);
+}
+.buttons{display:flex;gap:8px}
+button{
+  background:var(--accent);
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.result{margin-top:8px;font-weight:600}
+.computed-result {
+  margin-top: 4px;
+  font-weight: 600;
+  color: var(--primary);
+}
+/* Стили для экрана выбора языка */
+.language-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.language-card {
+  background: var(--card);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.language-card h1 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  font-size: 2.5em;
+}
+
+.language-card p {
+  color: var(--muted);
+  margin-bottom: 30px;
+  font-size: 1.1em;
+}
+
+.language-options {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.language-btn {
+  background: white;
+  border: 2px solid var(--accent);
+  padding: 20px 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--primary);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 120px;
+}
+
+.language-btn:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.flag {
+  font-size: 2em;
+}
+
+/* Скрытие экрана выбора языка */
+.language-screen.hidden {
+  display: none;
+}
+
+/* Стили для переключателя языка */
+.header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+/* Стили для экрана выбора уровней */
+.level-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 20px;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.level-card {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  margin: 20px;
+}
+
+.level-header {
+  margin-bottom: 30px;
+}
+
+.level-header h2 {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 20px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--success));
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.progress-text {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.level-item {
+  background: white;
+  border: 3px solid var(--accent);
+  padding: 25px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  text-align: left;
+}
+
+.level-item:hover {
+  background: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.level-item.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.level-item.completed {
+  border-color: var(--success);
+  background: #e8f5e8;
+}
+
+.level-item.current {
+  border-color: #2196F3;
+  background: #e3f2fd;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
+}
+
+.level-number {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.level-title {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--primary);
+}
+
+.level-description {
+  font-size: 0.9em;
+  color: var(--muted);
+  margin-bottom: 15px;
+}
+
+.level-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.level-difficulty {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.level-difficulty.beginner {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.level-difficulty.intermediate {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.level-difficulty.advanced {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.level-score {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.level-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.back-btn {
+  background: var(--muted);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #555;
+}
+
+.reset-btn {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.reset-btn:hover {
+  background: #f57c00;
+}
+
+/* Стили для навигации по уровням */
+.level-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: #e6b800;
+  transform: translateY(-1px);
+}
+
+.nav-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Стили для информации об упражнении */
+.exercise-info {
+  background: var(--card);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.exercise-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Стили для навигации по упражнениям */
+.exercise-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+/* Сообщение о завершении уровня */
+.level-complete-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.complete-card {
+  background: var(--card);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 400px;
+}
+
+.complete-card h2 {
+  color: var(--success);
+  margin-bottom: 15px;
+}
+
+.complete-card p {
+  color: var(--primary);
+  margin-bottom: 25px;
+  font-size: 1.1em;
+}
+
+.complete-btn {
+  background: var(--success);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.complete-btn:hover {
+  background: #1e7e34;
+  transform: translateY(-2px);
+}
+
+/* Стили для объяснений */
+.explanation {
+  background: #e8f5e8;
+  border: 2px solid var(--success);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-style: italic;
+  color: #2e7d32;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .levels-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .level-card {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .header-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .exercise-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-height:700px){
+  /* чтобы на iPhone экран всё влазил: сделать контейнер прокручиваемым */
+  body{align-items:flex-start}
+  .wrap{margin-top:12px}
+}
