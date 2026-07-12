@@ -1,1 +1,370 @@
-{"id":9,"title":{"ru":"Уровень 10: ИНДЕКС + ПОИСКПОЗ","en":"Level 10: INDEX + MATCH"},"description":{"ru":"Освой функции ИНДЕКС, ПОИСКПОЗ и их комбинацию для гибкого поиска","en":"Learn INDEX, MATCH, and how to combine them for flexible lookups"},"difficulty":"advanced","exercises":[{"id":"index-basic","task":{"ru":"Используй функцию ИНДЕКС, чтобы вернуть название препарата по номеру строки. Формула: =ИНДЕКС(A2:A6;C6) или =INDEX(A2:A6,C6).\n\nПервый аргумент (A2:A6) — массив, из которого нужно вернуть значение.\nВторой аргумент (C6) — номер строки в массиве (1 — первая строка, 2 — вторая и т.д.). В ячейке C6 указан номер 4, значит нужно вернуть значение из 4-й строки массива A2:A6.\n\nИНДЕКС возвращает значение из указанной позиции массива.","en":"Use INDEX to return a drug name by row number. Formula: =INDEX(A2:A6,C6) (or the Russian variant).\n\nFirst argument (A2:A6) is the array to return a value from.\nSecond argument (C6) is the row number in the array. Cell C6 contains 4, so return the value from the 4th row of array A2:A6.\n\nINDEX returns the value at the specified position in the array."},"data":[["Препарат","Отдел","Номер","Итого"],["Таблетки 200 мг","Продажи","",""],["Капсулы 400 мг","Маркетинг","",""],["Суспензия","Производство","",""],["Гель","Логистика","",""],["Крем","Качество","",""],["","",4,""]],"expectedFormula":"=INDEX(A2:A6,C6)","alternateFormulas":["=INDEX(A2:A6;C6)","=ИНДЕКС(A2:A6;C6)","=INDEX(A2:A6,C6)","=ИНДЕКС(A2:A6;C6)"],"resultCell":"D6","hint":{"ru":"Аргументы: массив, затем номер строки (и по желанию номер столбца).","en":"Arguments: array, then row number (column number optional)."},"points":180,"explanation":{"ru":"ИНДЕКС возвращает элемент по указанным координатам без ограничений на расположение столбцов.","en":"INDEX returns an item by coordinates without the layout limitations of VLOOKUP."}},{"id":"match-basic","task":{"ru":"Найди позицию аптечной сети в списке с помощью ПОИСКПОЗ: =ПОИСКПОЗ(C6;A2:A6;0) или =MATCH(C6,A2:A6,0).\n\nПервый аргумент (C6) — значение, которое нужно найти.\nВторой аргумент (A2:A6) — диапазон, в котором ищем.\nТретий аргумент (0) — тип поиска: 0 = точное совпадение.\n\nПОИСКПОЗ возвращает порядковый номер найденного значения в диапазоне.","en":"Locate an pharmacy network's position using =MATCH(C6,A2:A6,0) (or the Russian form).\n\nFirst argument (C6) is the value to find.\nSecond argument (A2:A6) is the range to search in.\nThird argument (0) is the match type: 0 = exact match.\n\nMATCH returns the position number of the found value in the range."},"data":[["Аптечная сеть","Регион","Позиция","Итого"],["Сеть А","North","",""],["Сеть Б","West","",""],["Сеть В","South","",""],["Сеть Г","East","",""],["Сеть Д","Central","",""],["","","Сеть В",""]],"expectedFormula":"=MATCH(C6,A2:A6,0)","alternateFormulas":["=MATCH(C6;A2:A6;0)","=MATCH(C6,A2:A6,0)","=ПОИСКПОЗ(C6;A2:A6;0)"],"resultCell":"D6","hint":{"ru":"ПОИСКПОЗ возвращает порядковый номер значения в диапазоне, третий аргумент =0 означает точное совпадение.","en":"MATCH returns the position of a value; a third argument of 0 forces an exact match."},"points":180,"explanation":{"ru":"ПОИСКПОЗ полезна для нахождения индекса строки или столбца, чтобы передать его в ИНДЕКС.","en":"MATCH lets you find the row or column index to feed into INDEX."}},{"id":"index-match-combo","task":{"ru":"Комбинируй ИНДЕКС и ПОИСКПОЗ, чтобы найти цену препарата по артикулу. Формула: =ИНДЕКС(C2:C6;ПОИСКПОЗ(E6;A2:A6;0)) или =INDEX(C2:C6,MATCH(E6,A2:A6,0)).\n\nВнутренняя функция ПОИСКПОЗ находит позицию артикула в столбце A и возвращает номер строки.\nВнешняя функция ИНДЕКС использует этот номер строки, чтобы вернуть цену из столбца C.\n\nКогда использовать ИНДЕКС+ПОИСКПОЗ вместо ВПР: когда нужный столбец левее ключевого, когда нужен динамический выбор столбца, при работе с большими таблицами.","en":"Combine INDEX and MATCH to return the drug price by SKU: =INDEX(C2:C6,MATCH(E6,A2:A6,0)) (or the Russian formula).\n\nThe inner MATCH function finds the SKU's position in column A and returns the row number.\nThe outer INDEX function uses this row number to return the price from column C.\n\nWhen to use INDEX+MATCH instead of VLOOKUP: when the result column is to the LEFT of the lookup column, when you need dynamic column selection, when working with large tables."},"data":[["Артикул","Препарат","Цена","Примечание","Запрос","Итого"],["FD-01","Таблетки 200 мг",1200,"","",""],["FD-02","Капсулы 400 мг",850,"","",""],["FD-03","Суспензия",540,"","",""],["FD-04","Гель",460,"","",""],["FD-05","Крем",1350,"","",""],["","","","","FD-03",""]],"expectedFormula":"=INDEX(C2:C6,MATCH(E6,A2:A6,0))","alternateFormulas":["=INDEX(C2:C6;MATCH(E6;A2:A6;0))","=INDEX(C2:C6,MATCH(E6,A2:A6,0))","=ИНДЕКС(C2:C6;ПОИСКПОЗ(E6;A2:A6;0))"],"resultCell":"F6","hint":{"ru":"Сначала ПОИСКПОЗ находит позицию артикула, затем ИНДЕКС возвращает цену из соответствующей строки.","en":"MATCH finds the SKU position; INDEX returns the price from the same row."},"points":200,"explanation":{"ru":"Комбинация ИНДЕКС+ПОИСКПОЗ нужна, когда ВПР ограничен или нужна гибкость.","en":"INDEX+MATCH works when VLOOKUP fails and offers more flexibility."}},{"id":"index-match-left-lookup","task":{"ru":"Найди менеджера по продажам препаратов по коду аптечной сети. Обрати внимание: столбец с менеджером находится ЛЕВЕЕ столбца с кодом — ВПР здесь не сработает! Используй =ИНДЕКС(A2:A5;ПОИСКПОЗ(D5;C2:C5;0)) или =INDEX(A2:A5,MATCH(D5,C2:C5,0)).\n\nВ ячейке D5 указан код \"PK-101\". ПОИСКПОЗ находит позицию этого кода в столбце C, а ИНДЕКС возвращает имя менеджера из столбца A той же строки.","en":"Find the drug sales manager by pharmacy network code. Note: the manager column is to the LEFT of the code column — VLOOKUP won't work here! Use =INDEX(A2:A5,MATCH(D5,C2:C5,0)) (or the Russian formula).\n\nCell D5 contains code \"PK-101\". MATCH finds the position of this code in column C, and INDEX returns the manager name from column A in the same row."},"data":[["Менеджер","Аптечная сеть","Код","Запрос","Итого"],["Иванова","Сеть А","PK-100","",""],["Петров","Сеть Б","PK-101","",""],["Сидоров","Сеть В","PK-102","",""],["Козлова","Сеть Г","PK-103","",""],["","","","PK-101",""]],"expectedFormula":"=INDEX(A2:A5,MATCH(D5,C2:C5,0))","alternateFormulas":["=INDEX(A2:A5;MATCH(D5;C2:C5;0))","=INDEX(A2:A5,MATCH(D5,C2:C5,0))","=ИНДЕКС(A2:A5;ПОИСКПОЗ(D5;C2:C5;0))"],"resultCell":"E5","hint":{"ru":"Это классический случай, когда ВПР не подходит — нужен поиск влево.","en":"This is a classic case where VLOOKUP fails — you need a left lookup."},"points":190,"explanation":{"ru":"ИНДЕКС+ПОИСКПОЗ — единственный способ найти значение слева от ключевого столбца без перестановки данных.","en":"INDEX+MATCH is the only way to find a value to the left of the lookup column without rearranging data."}},{"id":"index-match-dynamic-column","task":{"ru":"Найди значение продаж препаратов из столбца, указанного в ячейке E2. Используй =ИНДЕКС(A2:D4;ПОИСКПОЗ(F2;A1:D1;0);ПОИСКПОЗ(E2;A1:D1;0)) для двунаправленного поиска.","en":"Find the drug sales value from the column specified in cell E2. Use =INDEX(A2:D4,MATCH(F2,A1:D1,0),MATCH(E2,A1:D1,0)) for two-way lookup."},"data":[["Препарат","Q1","Q2","Q3","Столбец","Препарат","Итого"],["Таблетки 200 мг",120,135,150,"Q2","Капсулы 400 мг",""],["Капсулы 400 мг",85,92,98,"","",""],["Суспензия",54,58,62,"","",""]],"expectedFormula":"=INDEX(B2:D4,MATCH(F2,A2:A4,0),MATCH(E2,B1:D1,0))","alternateFormulas":["=INDEX(B2:D4;MATCH(F2;A2:A4;0);MATCH(E2;B1:D1;0))","=INDEX(B2:D4,MATCH(F2,A2:A4,0),MATCH(E2,B1:D1,0))","=ИНДЕКС(B2:D4;ПОИСКПОЗ(F2;A2:A4;0);ПОИСКПОЗ(E2;B1:D1;0))"],"resultCell":"G2","hint":{"ru":"Первый ПОИСКПОЗ находит строку по препарату, второй — столбец по кварталу.","en":"First MATCH finds the row by product, second finds the column by quarter."},"points":210,"explanation":{"ru":"Двунаправленный поиск — это когда нужно найти значение на пересечении строки и столбца, оба определяются динамически.","en":"Two-way lookup finds a value at the intersection of a dynamically determined row and column."}}],"unlockCondition":{"type":"complete_level","level":9},"rewards":{"points":960,"badge":"index_match_master","title":{"ru":"Мастер ИНДЕКС+ПОИСКПОЗ","en":"INDEX+MATCH Master"}}}
+{
+  "id": 9,
+  "title": {
+    "ru": "Уровень 10: ИНДЕКС + ПОИСКПОЗ",
+    "en": "Level 10: INDEX + MATCH"
+  },
+  "description": {
+    "ru": "Освой функции ИНДЕКС, ПОИСКПОЗ и их комбинацию для гибкого поиска",
+    "en": "Learn INDEX, MATCH, and how to combine them for flexible lookups"
+  },
+  "difficulty": "advanced",
+  "exercises": [
+    {
+      "id": "index-basic",
+      "task": {
+        "ru": "ИНДЕКС отвечает на вопрос: «верни значение из диапазона по номеру позиции». Диапазон A2:A6 — это список препаратов. В C6 стоит номер 4. Значит формула должна вернуть 4-й элемент списка: =ИНДЕКС(A2:A6;C6).",
+        "en": "Use INDEX to return a drug name by row number. Formula: =INDEX(A2:A6,C6) (or the Russian variant).\n\nFirst argument (A2:A6) is the array to return a value from.\nSecond argument (C6) is the row number in the array. Cell C6 contains 4, so return the value from the 4th row of array A2:A6.\n\nINDEX returns the value at the specified position in the array."
+      },
+      "data": [
+        [
+          "Препарат",
+          "Отдел",
+          "Номер",
+          "Итого"
+        ],
+        [
+          "Таблетки 200 мг",
+          "Продажи",
+          "",
+          ""
+        ],
+        [
+          "Капсулы 400 мг",
+          "Маркетинг",
+          "",
+          ""
+        ],
+        [
+          "Суспензия",
+          "Производство",
+          "",
+          ""
+        ],
+        [
+          "Гель",
+          "Логистика",
+          "",
+          ""
+        ],
+        [
+          "Крем",
+          "Качество",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          4,
+          ""
+        ]
+      ],
+      "expectedFormula": "=INDEX(A2:A6,C6)",
+      "alternateFormulas": [
+        "=INDEX(A2:A6;C6)",
+        "=ИНДЕКС(A2:A6;C6)",
+        "=INDEX(A2:A6,C6)",
+        "=ИНДЕКС(A2:A6;C6)"
+      ],
+      "resultCell": "D6",
+      "hint": {
+        "ru": "Не думай про всю таблицу. Есть список A2:A6 и номер позиции C6. ИНДЕКС берёт элемент списка по этому номеру.",
+        "en": "Arguments: array, then row number (column number optional)."
+      },
+      "points": 180,
+      "explanation": {
+        "ru": "ИНДЕКС возвращает элемент по указанным координатам без ограничений на расположение столбцов.",
+        "en": "INDEX returns an item by coordinates without the layout limitations of VLOOKUP."
+      }
+    },
+    {
+      "id": "match-basic",
+      "task": {
+        "ru": "ПОИСКПОЗ отвечает на вопрос: «на каком месте в списке находится значение?». C6 содержит искомое название, A2:A6 — список. Ноль в конце означает точное совпадение. Формула: =ПОИСКПОЗ(C6;A2:A6;0).",
+        "en": "Locate an pharmacy network's position using =MATCH(C6,A2:A6,0) (or the Russian form).\n\nFirst argument (C6) is the value to find.\nSecond argument (A2:A6) is the range to search in.\nThird argument (0) is the match type: 0 = exact match.\n\nMATCH returns the position number of the found value in the range."
+      },
+      "data": [
+        [
+          "Аптечная сеть",
+          "Регион",
+          "Позиция",
+          "Итого"
+        ],
+        [
+          "Сеть А",
+          "North",
+          "",
+          ""
+        ],
+        [
+          "Сеть Б",
+          "West",
+          "",
+          ""
+        ],
+        [
+          "Сеть В",
+          "South",
+          "",
+          ""
+        ],
+        [
+          "Сеть Г",
+          "East",
+          "",
+          ""
+        ],
+        [
+          "Сеть Д",
+          "Central",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "Сеть В",
+          ""
+        ]
+      ],
+      "expectedFormula": "=MATCH(C6,A2:A6,0)",
+      "alternateFormulas": [
+        "=MATCH(C6;A2:A6;0)",
+        "=MATCH(C6,A2:A6,0)",
+        "=ПОИСКПОЗ(C6;A2:A6;0)"
+      ],
+      "resultCell": "D6",
+      "hint": {
+        "ru": "ПОИСКПОЗ возвращает не само значение, а его позицию в диапазоне.",
+        "en": "MATCH returns the position of a value; a third argument of 0 forces an exact match."
+      },
+      "points": 180,
+      "explanation": {
+        "ru": "ПОИСКПОЗ полезна для нахождения индекса строки или столбца, чтобы передать его в ИНДЕКС.",
+        "en": "MATCH lets you find the row or column index to feed into INDEX."
+      }
+    },
+    {
+      "id": "index-match-combo",
+      "task": {
+        "ru": "Комбинируй ИНДЕКС и ПОИСКПОЗ, чтобы найти цену препарата по артикулу. Формула: =ИНДЕКС(C2:C6;ПОИСКПОЗ(E6;A2:A6;0)) или =INDEX(C2:C6,MATCH(E6,A2:A6,0)).\n\nВнутренняя функция ПОИСКПОЗ находит позицию артикула в столбце A и возвращает номер строки.\nВнешняя функция ИНДЕКС использует этот номер строки, чтобы вернуть цену из столбца C.\n\nКогда использовать ИНДЕКС+ПОИСКПОЗ вместо ВПР: когда нужный столбец левее ключевого, когда нужен динамический выбор столбца, при работе с большими таблицами.",
+        "en": "Combine INDEX and MATCH to return the drug price by SKU: =INDEX(C2:C6,MATCH(E6,A2:A6,0)) (or the Russian formula).\n\nThe inner MATCH function finds the SKU's position in column A and returns the row number.\nThe outer INDEX function uses this row number to return the price from column C.\n\nWhen to use INDEX+MATCH instead of VLOOKUP: when the result column is to the LEFT of the lookup column, when you need dynamic column selection, when working with large tables."
+      },
+      "data": [
+        [
+          "Артикул",
+          "Препарат",
+          "Цена",
+          "Примечание",
+          "Запрос",
+          "Итого"
+        ],
+        [
+          "FD-01",
+          "Таблетки 200 мг",
+          1200,
+          "",
+          "",
+          ""
+        ],
+        [
+          "FD-02",
+          "Капсулы 400 мг",
+          850,
+          "",
+          "",
+          ""
+        ],
+        [
+          "FD-03",
+          "Суспензия",
+          540,
+          "",
+          "",
+          ""
+        ],
+        [
+          "FD-04",
+          "Гель",
+          460,
+          "",
+          "",
+          ""
+        ],
+        [
+          "FD-05",
+          "Крем",
+          1350,
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "",
+          "FD-03",
+          ""
+        ]
+      ],
+      "expectedFormula": "=INDEX(C2:C6,MATCH(E6,A2:A6,0))",
+      "alternateFormulas": [
+        "=INDEX(C2:C6;MATCH(E6;A2:A6;0))",
+        "=INDEX(C2:C6,MATCH(E6,A2:A6,0))",
+        "=ИНДЕКС(C2:C6;ПОИСКПОЗ(E6;A2:A6;0))"
+      ],
+      "resultCell": "F6",
+      "hint": {
+        "ru": "Сначала ПОИСКПОЗ находит позицию артикула, затем ИНДЕКС возвращает цену из соответствующей строки.",
+        "en": "MATCH finds the SKU position; INDEX returns the price from the same row."
+      },
+      "points": 200,
+      "explanation": {
+        "ru": "Комбинация ИНДЕКС+ПОИСКПОЗ нужна, когда ВПР ограничен или нужна гибкость.",
+        "en": "INDEX+MATCH works when VLOOKUP fails and offers more flexibility."
+      }
+    },
+    {
+      "id": "index-match-left-lookup",
+      "task": {
+        "ru": "Найди менеджера по продажам препаратов по коду аптечной сети. Обрати внимание: столбец с менеджером находится ЛЕВЕЕ столбца с кодом — ВПР здесь не сработает! Используй =ИНДЕКС(A2:A5;ПОИСКПОЗ(D5;C2:C5;0)) или =INDEX(A2:A5,MATCH(D5,C2:C5,0)).\n\nВ ячейке D5 указан код \"PK-101\". ПОИСКПОЗ находит позицию этого кода в столбце C, а ИНДЕКС возвращает имя менеджера из столбца A той же строки.",
+        "en": "Find the drug sales manager by pharmacy network code. Note: the manager column is to the LEFT of the code column — VLOOKUP won't work here! Use =INDEX(A2:A5,MATCH(D5,C2:C5,0)) (or the Russian formula).\n\nCell D5 contains code \"PK-101\". MATCH finds the position of this code in column C, and INDEX returns the manager name from column A in the same row."
+      },
+      "data": [
+        [
+          "Менеджер",
+          "Аптечная сеть",
+          "Код",
+          "Запрос",
+          "Итого"
+        ],
+        [
+          "Иванова",
+          "Сеть А",
+          "PK-100",
+          "",
+          ""
+        ],
+        [
+          "Петров",
+          "Сеть Б",
+          "PK-101",
+          "",
+          ""
+        ],
+        [
+          "Сидоров",
+          "Сеть В",
+          "PK-102",
+          "",
+          ""
+        ],
+        [
+          "Козлова",
+          "Сеть Г",
+          "PK-103",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "PK-101",
+          ""
+        ]
+      ],
+      "expectedFormula": "=INDEX(A2:A5,MATCH(D5,C2:C5,0))",
+      "alternateFormulas": [
+        "=INDEX(A2:A5;MATCH(D5;C2:C5;0))",
+        "=INDEX(A2:A5,MATCH(D5,C2:C5,0))",
+        "=ИНДЕКС(A2:A5;ПОИСКПОЗ(D5;C2:C5;0))"
+      ],
+      "resultCell": "E5",
+      "hint": {
+        "ru": "Это классический случай, когда ВПР не подходит — нужен поиск влево.",
+        "en": "This is a classic case where VLOOKUP fails — you need a left lookup."
+      },
+      "points": 190,
+      "explanation": {
+        "ru": "ИНДЕКС+ПОИСКПОЗ — единственный способ найти значение слева от ключевого столбца без перестановки данных.",
+        "en": "INDEX+MATCH is the only way to find a value to the left of the lookup column without rearranging data."
+      }
+    },
+    {
+      "id": "index-match-dynamic-column",
+      "task": {
+        "ru": "Найди значение продаж препаратов из столбца, указанного в ячейке E2. Используй =ИНДЕКС(A2:D4;ПОИСКПОЗ(F2;A1:D1;0);ПОИСКПОЗ(E2;A1:D1;0)) для двунаправленного поиска.",
+        "en": "Find the drug sales value from the column specified in cell E2. Use =INDEX(A2:D4,MATCH(F2,A1:D1,0),MATCH(E2,A1:D1,0)) for two-way lookup."
+      },
+      "data": [
+        [
+          "Препарат",
+          "Q1",
+          "Q2",
+          "Q3",
+          "Столбец",
+          "Препарат",
+          "Итого"
+        ],
+        [
+          "Таблетки 200 мг",
+          120,
+          135,
+          150,
+          "Q2",
+          "Капсулы 400 мг",
+          ""
+        ],
+        [
+          "Капсулы 400 мг",
+          85,
+          92,
+          98,
+          "",
+          "",
+          ""
+        ],
+        [
+          "Суспензия",
+          54,
+          58,
+          62,
+          "",
+          "",
+          ""
+        ]
+      ],
+      "expectedFormula": "=INDEX(B2:D4,MATCH(F2,A2:A4,0),MATCH(E2,B1:D1,0))",
+      "alternateFormulas": [
+        "=INDEX(B2:D4;MATCH(F2;A2:A4;0);MATCH(E2;B1:D1;0))",
+        "=INDEX(B2:D4,MATCH(F2,A2:A4,0),MATCH(E2,B1:D1,0))",
+        "=ИНДЕКС(B2:D4;ПОИСКПОЗ(F2;A2:A4;0);ПОИСКПОЗ(E2;B1:D1;0))"
+      ],
+      "resultCell": "G2",
+      "hint": {
+        "ru": "Первый ПОИСКПОЗ находит строку по препарату, второй — столбец по кварталу.",
+        "en": "First MATCH finds the row by product, second finds the column by quarter."
+      },
+      "points": 210,
+      "explanation": {
+        "ru": "Двунаправленный поиск — это когда нужно найти значение на пересечении строки и столбца, оба определяются динамически.",
+        "en": "Two-way lookup finds a value at the intersection of a dynamically determined row and column."
+      }
+    }
+  ],
+  "unlockCondition": {
+    "type": "complete_level",
+    "level": 9
+  },
+  "rewards": {
+    "points": 960,
+    "badge": "index_match_master",
+    "title": {
+      "ru": "Мастер ИНДЕКС+ПОИСКПОЗ",
+      "en": "INDEX+MATCH Master"
+    }
+  }
+}

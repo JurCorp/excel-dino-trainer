@@ -15,11 +15,11 @@ body{
   display:flex;
   justify-content:center;
   min-height:100vh;
-  align-items:center;
+  align-items:flex-start;
 }
 .wrap{
   width:100%;
-  max-width:720px;
+  max-width:920px;
 }
 h1{margin:0 0 12px}
 .card{
@@ -28,6 +28,10 @@ h1{margin:0 0 12px}
   border-radius:10px;
   margin-bottom:12px;
   box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+#tableWrap{
+  overflow-x:auto;
+  padding:8px;
 }
 #tableWrap table{
   width:100%;
@@ -205,10 +209,13 @@ body.level-12 #task-text li {
 }
 input[type="text"]{
   width:100%;
-  padding:8px;
-  margin:8px 0;
-  border-radius:6px;
-  border:1px solid rgba(0,0,0,0.12);
+  padding:14px 16px;
+  margin:10px 0;
+  border-radius:10px;
+  border:2px solid rgba(0,0,0,0.14);
+  font-size:18px;
+  line-height:1.35;
+  font-family:Consolas, "Courier New", monospace;
 }
 .buttons{display:flex;gap:8px}
 button{
@@ -218,7 +225,7 @@ button{
   border-radius:8px;
   cursor:pointer;
 }
-.result{margin-top:8px;font-weight:600}
+.result{margin-top:10px;font-weight:600;padding:10px 12px;border-radius:10px;background:#fff;min-height:20px}
 .computed-result {
   margin-top: 4px;
   font-weight: 600;
@@ -669,4 +676,33 @@ button{
   /* чтобы на iPhone экран всё влазил: сделать контейнер прокручиваемым */
   body{align-items:flex-start}
   .wrap{margin-top:12px}
+}
+
+/* UX polish after tester feedback */
+.formula-help {
+  margin-top: -2px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+#userFormula:focus {
+  outline: 3px solid rgba(245, 200, 42, 0.45);
+  border-color: var(--accent);
+}
+.result.success {
+  color: #1e7e34;
+  background: #e8f5e8;
+  border: 1px solid #b7dfb7;
+}
+.result.error {
+  color: #b00020;
+  background: #fff0f0;
+  border: 1px solid #f3b6b6;
+}
+@media (max-width: 768px) {
+  body { padding: 10px; }
+  .card { padding: 10px; }
+  input[type="text"] { font-size: 17px; padding: 13px 14px; }
+  .excel-table td:not(.row-header),
+  .excel-table th.col-header { min-width: 58px; max-width: 90px; width: 58px; }
 }

@@ -418,7 +418,11 @@ class LevelManager {
       'ВПР': 'VLOOKUP',
       'ПОИСКПОЗ': 'MATCH',
       'ПРОСМОТРХ': 'XLOOKUP',
-      'ИНДЕКС': 'INDEX'
+      'ИНДЕКС': 'INDEX',
+      'ЕСЛИОШИБКА': 'IFERROR',
+      'ЕСЛИМН': 'IFS',
+      'ИСТИНА': 'TRUE',
+      'ЛОЖЬ': 'FALSE'
     };
     
     let translatedFormula = formula;

@@ -444,7 +444,8 @@ function onCheck() {
   const formulaInput = document.getElementById('userFormula');
   const resultBox = document.getElementById('result');
   const explanationBox = document.getElementById('explanation');
-  const userFormula = formulaInput.value.trim();
+  const userFormula = autoCloseFormulaParentheses(formulaInput.value);
+  formulaInput.value = userFormula;
   const t = texts[currentLanguage];
 
   if (!userFormula || !userFormula.startsWith('=')) {
@@ -473,6 +474,8 @@ function onCheck() {
 
     if (isCorrect) {
       resultBox.style.color = 'green';
+      resultBox.classList.remove('error');
+      resultBox.classList.add('success');
       resultBox.textContent = `${t.correct} Формула: ${userFormula}`;
       
       // Отмечаем упражнение как завершенное
@@ -504,6 +507,8 @@ function onCheck() {
       
     } else {
       resultBox.style.color = 'red';
+      resultBox.classList.remove('success');
+      resultBox.classList.add('error');
       // Находим русскую версию формулы из alternateFormulas
       let russianFormula = '';
       if (exercise.alternateFormulas) {
@@ -561,13 +566,43 @@ function onCheck() {
 
 function onReset() {
   document.getElementById('userFormula').value = '';
-  document.getElementById('result').textContent = '';
+  const resultEl = document.getElementById('result');
+  resultEl.textContent = '';
+  resultEl.classList.remove('success', 'error');
   document.getElementById('explanation').style.display = 'none';
   displayComputedResult(null);
   const exercise = window.levelManager.getCurrentExercise();
   if (exercise && exercise.resultCell) {
     updateResultCell(exercise.resultCell, null);
   }
+}
+
+
+function autoCloseFormulaParentheses(rawFormula) {
+  let formula = rawFormula.trim();
+  if (!formula.startsWith('=')) return formula;
+  const opens = (formula.match(/\(/g) || []).length;
+  const closes = (formula.match(/\)/g) || []).length;
+  if (opens > closes) {
+    formula += ')'.repeat(opens - closes);
+  }
+  return formula;
+}
+
+function setupFormulaInputHelpers() {
+  const input = document.getElementById('userFormula');
+  if (!input || input.dataset.helpersAttached === 'true') return;
+  input.dataset.helpersAttached = 'true';
+  input.addEventListener('blur', () => {
+    const fixed = autoCloseFormulaParentheses(input.value);
+    if (fixed !== input.value.trim()) input.value = fixed;
+  });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      input.value = autoCloseFormulaParentheses(input.value);
+      onCheck();
+    }
+  });
 }
 
 function onHint() {
@@ -630,11 +665,12 @@ async function completeLevel() {
     }
   }
   
-  // Возвращаемся в меню уровней
-  await showLevelSelection();
-  
-  // Показываем сообщение о завершении уровня
-  alert(currentLanguage === 'ru' ? '🎉 Уровень пройден!' : '🎉 Level Complete!');
+  const message = document.getElementById('level-complete-message');
+  if (message) {
+    message.style.display = 'flex';
+  } else {
+    await showLevelSelection();
+  }
 }
 
 async function prevLevel() {
@@ -750,8 +786,8 @@ async function loadLevelsList() {
       ? level.unlocked
       : (window.levelManager ? window.levelManager.isLevelUnlocked(level.id) : true);
     
-    // Если unlockCondition.type === "none", уровень заблокирован
-    if (level.unlockCondition && level.unlockCondition.type === "none") {
+    // Демо-режим: все уровни доступны.
+    if (false && level.unlockCondition && level.unlockCondition.type === "none") {
       unlocked = false;
     }
 
@@ -836,19 +872,8 @@ async function updateProgressBar() {
 // Функция начала уровня
 async function startLevel(levelId) {
   try {
-    // Проверяем блокировку перед загрузкой
-    const level = window.levelManager.levels.get(levelId);
-    if (level && level.unlockCondition && level.unlockCondition.type === "none") {
-      alert(currentLanguage === 'ru' ? 'Этот уровень заблокирован' : 'This level is locked');
-      return;
-    }
-    
+    // Все уровни открыты в демо-режиме.
     await window.levelManager.loadLevel(levelId);
-    const currentLevel = window.levelManager.getCurrentLevel();
-    if (currentLevel && currentLevel.unlockCondition && currentLevel.unlockCondition.type === "none") {
-      alert(currentLanguage === 'ru' ? 'Этот уровень заблокирован' : 'This level is locked');
-      return;
-    }
     
     document.getElementById('level-selection').style.display = 'none';
     document.querySelector('.wrap').style.display = 'block';
@@ -1006,11 +1031,9 @@ async function updateExerciseInterface() {
     if (buttonsContainer) buttonsContainer.style.display = 'flex';
     
     // Обновляем placeholder
-    const hintParts = [];
-    if (exercise.hint?.ru) hintParts.push(exercise.hint.ru);
-    if (exercise.hint?.en) hintParts.push(exercise.hint.en);
-    const combinedHint = hintParts.join(' / ');
-    const placeholder = hintParts.length > 0 ? combinedHint : texts[currentLanguage].formulaPlaceholder;
+    const placeholder = currentLanguage === 'ru'
+      ? 'Например: =СУММ(B2:B8). Можно писать русские функции с ; или английские с ,'
+      : 'Example: =SUM(B2:B8). Use English functions with commas.';
     if (userFormulaInput) {
       userFormulaInput.placeholder = placeholder;
     }
@@ -1057,7 +1080,9 @@ async function updateExerciseInterface() {
   }
   
   // Очищаем результат и объяснение
-  document.getElementById('result').textContent = '';
+  const resultEl = document.getElementById('result');
+  resultEl.textContent = '';
+  resultEl.classList.remove('success', 'error');
   document.getElementById('explanation').style.display = 'none';
   document.getElementById('userFormula').value = '';
   
@@ -1325,6 +1350,9 @@ function evaluateTerm(term, exercise) {
   }
   if (cleaned.startsWith('IFS(') && cleaned.endsWith(')')) {
     return evaluateIfs(cleaned, exercise);
+  }
+  if (cleaned.startsWith('IFERROR(') && cleaned.endsWith(')')) {
+    return evaluateIferror(cleaned, exercise);
   }
   if (cleaned.startsWith('VLOOKUP(') && cleaned.endsWith(')')) {
     return evaluateVlookup(cleaned, exercise);
@@ -1833,6 +1861,22 @@ function evaluateIf(ifExpression, exercise) {
   return evaluateExpression(branchExpression, exercise);
 }
 
+function evaluateIferror(iferrorExpression, exercise) {
+  const inner = iferrorExpression.slice(8, -1); // remove IFERROR(
+  const args = splitByDelimiter(inner, ',');
+  if (args.length < 2) return 0;
+  const fallback = args[1];
+  try {
+    const value = evaluateExpression(args[0], exercise);
+    if (value === 0 || value === null || value === undefined || Number.isNaN(value)) {
+      return evaluateExpression(fallback, exercise);
+    }
+    return value;
+  } catch (error) {
+    return evaluateExpression(fallback, exercise);
+  }
+}
+
 function evaluateCondition(conditionSegment, exercise) {
   const condition = conditionSegment.trim();
   const operators = ['>=', '<=', '<>', '!=', '>', '<', '='];
@@ -2244,7 +2288,9 @@ async function connectSupabase(retry = 0) {
       if (!error && data?.session?.user) {
         currentUser = data.session.user;
         await loadUserProgress();
-        await showLevelSelection();
+        if (document.querySelector('.wrap')?.style.display !== 'block') {
+          await showLevelSelection();
+        }
       }
     } catch (error) {
       console.error('Ошибка получения сессии Supabase:', error);
@@ -2255,10 +2301,16 @@ async function connectSupabase(retry = 0) {
         if (session && session.user) {
           currentUser = session.user;
           await loadUserProgress();
-          await showLevelSelection();
+          if (document.querySelector('.wrap')?.style.display !== 'block') {
+            await showLevelSelection();
+          }
         } else {
           currentUser = null;
-          showAuthScreen();
+          // Авторизация отключена для демо-режима: не возвращаем пользователя в меню
+          // во время прохождения уровня при фоновых auth-событиях Supabase.
+          if (document.querySelector('.wrap')?.style.display !== 'block') {
+            showAuthScreen();
+          }
         }
       });
     }
@@ -2275,6 +2327,7 @@ async function connectSupabase(retry = 0) {
 async function initializeApp() {
   try {
     setupEventListeners();
+  setupFormulaInputHelpers();
     initLevels();
     
     try {

@@ -1,1 +1,208 @@
-{"id":6,"title":{"ru":"Уровень 9: ПРОСМОТРХ","en":"Level 9: XLOOKUP"},"description":{"ru":"Освой современные сценарии использования ПРОСМОТРХ","en":"Master modern XLOOKUP scenarios"},"difficulty":"intermediate","exercises":[{"id":"xlookup-basic","task":{"ru":"Найди цену препарата по его названию, используя =ПРОСМОТРХ(A5;A2:A4;B2:B4) или =XLOOKUP(A5,A2:A4,B2:B4).\n\nАргументы: A5 — значение, которое ищем; A2:A4 — диапазон поиска (lookup array); B2:B4 — диапазон, откуда возвращаем результат (return array).","en":"Find drug price by name using =XLOOKUP(A5,A2:A4,B2:B4) (or the Russian form).\n\nArguments: A5 is the lookup value; A2:A4 is the lookup array; B2:B4 is the return array."},"data":[["Препарат","Цена","","","ОжидаемаяФормула"],["Таблетки 200 мг",50000,"","","=XLOOKUP(A5;A2:A4;B2:B4)"],["Капсулы 400 мг",60000,"","",""],["Суспензия",55000,"","",""],["Таблетки 200 мг","","","",""]],"expectedFormula":"=XLOOKUP(A5,A2:A4,B2:B4)","alternateFormulas":["=XLOOKUP(A5;A2:A4;B2:B4)","=XLOOKUP(A5,A2:A4,B2:B4)","=ПРОСМОТРХ(A5;A2:A4;B2:B4)"],"hint":{"ru":"ПРОСМОТРХ принимает что ищем, где ищем и массив для возврата результата.","en":"XLOOKUP expects value, lookup array, then return array."},"points":200,"explanation":{"ru":"Новый ПРОСМОТРХ ищет значение в A2:A4 и возвращает соответствующую цену из B2:B4.","en":"XLOOKUP searches A2:A4 for the name and returns the price from B2:B4."}},{"id":"xlookup-column","task":{"ru":"Верни отдел сотрудника компании по полю для поиска и столбцу результата","en":"Return a company employee department by selecting lookup and return arrays"},"data":[["Сотрудник","Отдел","Роль","ОжидаемаяФормула"],["Иванов","Продажи","Менеджер",""],["Петров","Логистика","Тимлид",""],["Сидоров","Производство","Аналитик",""],["Иванов","","","=XLOOKUP(A5;A2:A4;B2:B4)"],["Петров","","",""]],"expectedFormula":"=XLOOKUP(A5,A2:A4,B2:B4)","alternateFormulas":["=XLOOKUP(A5;A2:A4;B2:B4)","=XLOOKUP(A5,A2:A4,B2:B4)","=ПРОСМОТРХ(A5;A2:A4;B2:B4)"],"hint":{"ru":"Выбери массив поиска и массив результата вручную.","en":"Choose lookup and return arrays explicitly."},"points":200,"explanation":{"ru":"ПРОСМОТРХ может возвращать данные из любого столбца без изменения таблицы.","en":"XLOOKUP can return data from any column without altering the table."}},{"id":"xlookup-default","task":{"ru":"Найди статус аптечной сети, а если код отсутствует — верни 'Не найден'","en":"Look up the pharmacy network status and return 'Not found' when the code is missing"},"data":[["Код","Статус","Менеджер","ОжидаемаяФормула"],["PK001","Active","Иванова",""],["PK002","Pending","Петров",""],["PK003","Closed","Сидоров",""],["PK999","","","=XLOOKUP(A5;A2:A4;B2:B4;\"Не найден\")"],["PK999","","",""]],"expectedFormula":"=XLOOKUP(A5,A2:A4,B2:B4,\"Не найден\")","alternateFormulas":["=XLOOKUP(A5;A2:A4;B2:B4;\"Не найден\")","=XLOOKUP(A5,A2:A4,B2:B4,\"Не найден\")","=ПРОСМОТРХ(A5;A2:A4;B2:B4;\"Не найден\")"],"hint":{"ru":"Используй четвёртый аргумент ПРОСМОТРХ для значения по умолчанию.","en":"Use the fourth XLOOKUP argument for a default value."},"points":210,"explanation":{"ru":"ПРОСМОТРХ позволяет задать значение, если элемент не найден.","en":"XLOOKUP lets you supply a default when no match is found."}}],"unlockCondition":{"type":"complete_level","level":5},"rewards":{"points":620,"badge":"xlookup_master","title":{"ru":"Мастер ПРОСМОТРХ","en":"XLOOKUP Master"}}}
+{
+  "id": 6,
+  "title": {
+    "ru": "Уровень 9: ПРОСМОТРХ",
+    "en": "Level 9: XLOOKUP"
+  },
+  "description": {
+    "ru": "Освой современные сценарии использования ПРОСМОТРХ",
+    "en": "Master modern XLOOKUP scenarios"
+  },
+  "difficulty": "intermediate",
+  "exercises": [
+    {
+      "id": "xlookup-basic",
+      "task": {
+        "ru": "Найди цену препарата по его названию, используя =ПРОСМОТРХ(A5;A2:A4;B2:B4) или =XLOOKUP(A5,A2:A4,B2:B4).\n\nАргументы: A5 — значение, которое ищем; A2:A4 — диапазон поиска (lookup array); B2:B4 — диапазон, откуда возвращаем результат (return array).\n\nОтвет появится в строке поиска — рядом с исходным запросом.",
+        "en": "Find drug price by name using =XLOOKUP(A5,A2:A4,B2:B4) (or the Russian form).\n\nArguments: A5 is the lookup value; A2:A4 is the lookup array; B2:B4 is the return array."
+      },
+      "data": [
+        [
+          "Препарат",
+          "Цена",
+          "",
+          "",
+          "ОжидаемаяФормула"
+        ],
+        [
+          "Таблетки 200 мг",
+          50000,
+          "",
+          "",
+          "=XLOOKUP(A5;A2:A4;B2:B4)"
+        ],
+        [
+          "Капсулы 400 мг",
+          60000,
+          "",
+          "",
+          ""
+        ],
+        [
+          "Суспензия",
+          55000,
+          "",
+          "",
+          ""
+        ],
+        [
+          "Таблетки 200 мг",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "expectedFormula": "=XLOOKUP(A5,A2:A4,B2:B4)",
+      "alternateFormulas": [
+        "=XLOOKUP(A5;A2:A4;B2:B4)",
+        "=XLOOKUP(A5,A2:A4,B2:B4)",
+        "=ПРОСМОТРХ(A5;A2:A4;B2:B4)"
+      ],
+      "hint": {
+        "ru": "ПРОСМОТРХ принимает что ищем, где ищем и массив для возврата результата.",
+        "en": "XLOOKUP expects value, lookup array, then return array."
+      },
+      "points": 200,
+      "explanation": {
+        "ru": "Новый ПРОСМОТРХ ищет значение в A2:A4 и возвращает соответствующую цену из B2:B4.",
+        "en": "XLOOKUP searches A2:A4 for the name and returns the price from B2:B4."
+      },
+      "resultCell": "D5"
+    },
+    {
+      "id": "xlookup-column",
+      "task": {
+        "ru": "Найди отдел сотрудника через ПРОСМОТРХ. Логика такая: A5 — кого ищем, A2:A4 — где ищем, B2:B4 — что вернуть. Формула: =ПРОСМОТРХ(A5;A2:A4;B2:B4).",
+        "en": "Return a company employee department by selecting lookup and return arrays"
+      },
+      "data": [
+        [
+          "Сотрудник",
+          "Отдел",
+          "Роль",
+          "ОжидаемаяФормула"
+        ],
+        [
+          "Иванов",
+          "Продажи",
+          "Менеджер",
+          ""
+        ],
+        [
+          "Петров",
+          "Логистика",
+          "Тимлид",
+          ""
+        ],
+        [
+          "Сидоров",
+          "Производство",
+          "Аналитик",
+          ""
+        ],
+        [
+          "Иванов",
+          "",
+          "",
+          "=XLOOKUP(A5;A2:A4;B2:B4)"
+        ],
+        [
+          "Петров",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "expectedFormula": "=XLOOKUP(A5,A2:A4,B2:B4)",
+      "alternateFormulas": [
+        "=XLOOKUP(A5;A2:A4;B2:B4)",
+        "=XLOOKUP(A5,A2:A4,B2:B4)",
+        "=ПРОСМОТРХ(A5;A2:A4;B2:B4)"
+      ],
+      "hint": {
+        "ru": "Выбери массив поиска и массив результата вручную.",
+        "en": "Choose lookup and return arrays explicitly."
+      },
+      "points": 200,
+      "explanation": {
+        "ru": "ПРОСМОТРХ может возвращать данные из любого столбца без изменения таблицы.",
+        "en": "XLOOKUP can return data from any column without altering the table."
+      },
+      "resultCell": "D5"
+    },
+    {
+      "id": "xlookup-default",
+      "task": {
+        "ru": "Добавь текст по умолчанию, если код не найден. В ПРОСМОТРХ четвёртый аргумент — что показать при отсутствии совпадения. Текст нужно писать в кавычках: \"Не найден\". Формула: =ПРОСМОТРХ(A5;A2:A4;B2:B4;\"Не найден\").",
+        "en": "Look up the pharmacy network status and return 'Not found' when the code is missing"
+      },
+      "data": [
+        [
+          "Код",
+          "Статус",
+          "Менеджер",
+          "ОжидаемаяФормула"
+        ],
+        [
+          "PK001",
+          "Active",
+          "Иванова",
+          ""
+        ],
+        [
+          "PK002",
+          "Pending",
+          "Петров",
+          ""
+        ],
+        [
+          "PK003",
+          "Closed",
+          "Сидоров",
+          ""
+        ],
+        [
+          "PK999",
+          "",
+          "",
+          "=XLOOKUP(A5;A2:A4;B2:B4;\"Не найден\")"
+        ],
+        [
+          "PK999",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "expectedFormula": "=XLOOKUP(A5,A2:A4,B2:B4,\"Не найден\")",
+      "alternateFormulas": [
+        "=XLOOKUP(A5;A2:A4;B2:B4;\"Не найден\")",
+        "=XLOOKUP(A5,A2:A4,B2:B4,\"Не найден\")",
+        "=ПРОСМОТРХ(A5;A2:A4;B2:B4;\"Не найден\")"
+      ],
+      "hint": {
+        "ru": "Не найден — это не команда Excel, а обычный текст. Поэтому обязательно в кавычках: \"Не найден\".",
+        "en": "Use the fourth XLOOKUP argument for a default value."
+      },
+      "points": 210,
+      "explanation": {
+        "ru": "Четвёртый аргумент ПРОСМОТРХ заменяет ошибку #Н/Д на понятный текст.",
+        "en": "XLOOKUP lets you supply a default when no match is found."
+      },
+      "resultCell": "D5"
+    }
+  ],
+  "unlockCondition": {
+    "type": "complete_level",
+    "level": 5
+  },
+  "rewards": {
+    "points": 620,
+    "badge": "xlookup_master",
+    "title": {
+      "ru": "Мастер ПРОСМОТРХ",
+      "en": "XLOOKUP Master"
+    }
+  }
+}
