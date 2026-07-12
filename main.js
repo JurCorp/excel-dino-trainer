@@ -9,6 +9,9 @@
 let currentLanguage = 'ru'; // 'ru' или 'en'
 let currentUser = null;
 let currentLevel = 1;
+let userAccessStatus = 'free';
+const FREE_LEVEL_LIMIT = 2;
+const PAID_ACCESS_STATUSES = new Set(['paid', 'admin']);
 
 // Тексты интерфейса на разных языках
 const texts = {
@@ -67,6 +70,82 @@ const texts = {
     progress: 'Progress'
   }
 };
+
+function hasPaidAccess() {
+  return currentUser && PAID_ACCESS_STATUSES.has(userAccessStatus);
+}
+
+function isFreeLevel(levelId) {
+  return Number(levelId) <= FREE_LEVEL_LIMIT;
+}
+
+function canAccessLevel(levelId) {
+  return isFreeLevel(levelId) || hasPaidAccess();
+}
+
+async function fetchUserAccessStatus(userId) {
+  if (!window.supabaseClient || !userId) return 'free';
+  try {
+    const { data, error } = await window.supabaseClient
+      .from('user_profiles')
+      .select('access_status')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (error) {
+      console.warn('Не удалось получить access_status, используем free:', error.message);
+      return 'free';
+    }
+    return data?.access_status || 'free';
+  } catch (error) {
+    console.warn('Ошибка проверки доступа, используем free:', error);
+    return 'free';
+  }
+}
+
+async function refreshUserAccessStatus() {
+  userAccessStatus = currentUser ? await fetchUserAccessStatus(currentUser.id) : 'free';
+  return userAccessStatus;
+}
+
+function hideAllScreens() {
+  const auth = document.getElementById('auth-section');
+  const paywall = document.getElementById('paywall-section');
+  const levels = document.getElementById('level-selection');
+  const wrap = document.querySelector('.wrap');
+  if (auth) auth.style.display = 'none';
+  if (paywall) paywall.style.display = 'none';
+  if (levels) levels.style.display = 'none';
+  if (wrap) wrap.style.display = 'none';
+}
+
+function showAuthForm(message = '') {
+  hideAllScreens();
+  const auth = document.getElementById('auth-section');
+  const msg = document.getElementById('authMessage');
+  if (auth) auth.style.display = 'block';
+  if (msg) {
+    msg.textContent = message;
+    msg.style.color = message ? '#2c3e50' : '';
+  }
+}
+
+function showPaywall(levelId) {
+  hideAllScreens();
+  const section = document.getElementById('paywall-section');
+  const message = document.getElementById('paywall-message');
+  if (message) {
+    if (!currentUser) {
+      message.innerHTML = `Уровни 1–${FREE_LEVEL_LIMIT} доступны бесплатно. Чтобы открыть уровень ${levelId} и остальные уроки, войдите или зарегистрируйтесь.`;
+    } else {
+      message.innerHTML = `Вы вошли как <strong>${currentUser.email || 'пользователь'}</strong>. Текущий статус доступа: <strong>${userAccessStatus}</strong>. Для уровня ${levelId} нужен полный доступ.`;
+    }
+  }
+  const loginBtn = document.getElementById('paywall-login-btn');
+  if (loginBtn) {
+    loginBtn.textContent = currentUser ? 'Как получить доступ' : 'Войти / зарегистрироваться';
+  }
+  if (section) section.style.display = 'block';
+}
 
 // Функция для перевода русских формул в английские
 function translateFormulaToEnglish(formula) {
@@ -197,6 +276,9 @@ async function signUp() {
       // Создаем профиль пользователя
       if (data.user && window.createUserProfile) {
         await window.createUserProfile(data.user.id, email, currentLanguage);
+        currentUser = data.user;
+        await refreshUserAccessStatus();
+        await showLevelSelection();
       }
     }
   } catch (err) {
@@ -245,6 +327,7 @@ async function signIn() {
       console.error('Ошибка входа:', error);
   } else {
       currentUser = data.user;
+      await refreshUserAccessStatus();
       msg.textContent = t.welcome;
     msg.style.color = 'green';
       
@@ -308,6 +391,7 @@ async function logout() {
   }
 
   currentUser = null;
+  userAccessStatus = 'free';
   const msg = document.getElementById('authMessage');
   if (msg) {
     msg.textContent = '';
@@ -324,7 +408,7 @@ async function logout() {
     window.levelManager.currentLevel = 1;
     window.levelManager.currentExercise = 0;
   }
-  showAuthScreen();
+  await showLevelSelection();
 }
 
 // Функция для загрузки прогресса пользователя
@@ -722,6 +806,8 @@ async function resetProgress() {
 // Функция показа экрана выбора уровней
 async function showLevelSelection() {
   document.getElementById('auth-section').style.display = 'none';
+  const paywallSection = document.getElementById('paywall-section');
+  if (paywallSection) paywallSection.style.display = 'none';
   document.getElementById('level-selection').style.display = 'flex';
   document.querySelector('.wrap').style.display = 'none';
   
@@ -795,10 +881,19 @@ async function loadLevelsList() {
 
     let statusClass = '';
     let statusText = '';
+    const freeLevel = isFreeLevel(level.id);
+    const paidAllowed = hasPaidAccess();
+    const paywalled = !freeLevel && !paidAllowed;
 
     if (isCompleted) {
       statusClass = 'completed';
       statusText = currentLanguage === 'ru' ? 'Завершен' : 'Completed';
+    } else if (paywalled && !currentUser) {
+      statusClass = 'paywalled';
+      statusText = currentLanguage === 'ru' ? 'Нужен вход' : 'Sign in required';
+    } else if (paywalled) {
+      statusClass = 'paywalled';
+      statusText = currentLanguage === 'ru' ? 'Полный доступ' : 'Full access';
     } else if (!unlocked) {
       statusClass = 'locked';
       statusText = currentLanguage === 'ru' ? 'Заблокирован' : 'Locked';
@@ -810,6 +905,10 @@ async function loadLevelsList() {
       levelItem.classList.add(statusClass);
     }
 
+    const accessBadge = freeLevel
+      ? '<span class="level-badge free">Бесплатно</span>'
+      : (paidAllowed ? '<span class="level-badge free">Открыто</span>' : '<span class="level-badge paid">Платный урок</span>');
+
     const displayNumber = index + 1;
     const totalDisplay = totalExercises || 0;
     const completedDisplay = completedExercises > totalDisplay ? totalDisplay : completedExercises;
@@ -818,6 +917,7 @@ async function loadLevelsList() {
       <div class="level-number">${displayNumber}</div>
       <div class="level-title">${level.title && level.title[currentLanguage] ? level.title[currentLanguage] : `Уровень ${level.id}`}</div>
       <div class="level-description">${level.description && level.description[currentLanguage] ? level.description[currentLanguage] : ''}</div>
+      <div>${accessBadge}</div>
       <div class="level-status">
         <span class="level-score">${score} ${pointsLabel}</span>
       </div>
@@ -827,11 +927,9 @@ async function loadLevelsList() {
       </div>
     `;
 
-    if (unlocked) {
-      levelItem.style.cursor = 'pointer';
-      levelItem.addEventListener('click', () => startLevel(level.id));
-    } else {
-      levelItem.style.cursor = 'not-allowed';
+    levelItem.style.cursor = 'pointer';
+    levelItem.addEventListener('click', () => startLevel(level.id));
+    if (!unlocked) {
       levelItem.style.opacity = '0.6';
     }
 
@@ -872,7 +970,10 @@ async function updateProgressBar() {
 // Функция начала уровня
 async function startLevel(levelId) {
   try {
-    // Все уровни открыты в демо-режиме.
+    if (!canAccessLevel(levelId)) {
+      showPaywall(levelId);
+      return;
+    }
     await window.levelManager.loadLevel(levelId);
     
     document.getElementById('level-selection').style.display = 'none';
@@ -2149,8 +2250,7 @@ function applyLanguage(lang, { refreshUI = true } = {}) {
 }
 
 function showAuthScreen() {
-  // Экран авторизации отключен, сразу показываем выбор уровней
-  showLevelSelection();
+  showAuthForm('Войдите или зарегистрируйтесь, чтобы открыть платные уровни.');
 }
 
 function handleLanguageSelection(lang) {
@@ -2222,7 +2322,22 @@ function setupEventListeners() {
   
   const backToAuthBtn = document.getElementById('back-to-auth');
   if (backToAuthBtn) {
-    backToAuthBtn.addEventListener('click', showAuthScreen);
+    backToAuthBtn.addEventListener('click', showLevelSelection);
+  }
+  const paywallLoginBtn = document.getElementById('paywall-login-btn');
+  if (paywallLoginBtn) {
+    paywallLoginBtn.addEventListener('click', () => {
+      if (currentUser) {
+        const msg = document.getElementById('paywall-message');
+        if (msg) msg.innerHTML = 'Для полного доступа сейчас напишите Роману в Telegram: <strong>@rbulanovich</strong>. После оплаты он включит доступ в Supabase.';
+      } else {
+        showAuthForm('Зарегистрируйтесь или войдите. Первые 2 уровня бесплатны, остальные откроются после оплаты.');
+      }
+    });
+  }
+  const paywallBackBtn = document.getElementById('paywall-back-btn');
+  if (paywallBackBtn) {
+    paywallBackBtn.addEventListener('click', showLevelSelection);
   }
   const resetProgressBtn = document.getElementById('reset-progress');
   if (resetProgressBtn) {
@@ -2287,6 +2402,7 @@ async function connectSupabase(retry = 0) {
       const { data, error } = await window.supabaseClient.auth.getSession();
       if (!error && data?.session?.user) {
         currentUser = data.session.user;
+        await refreshUserAccessStatus();
         await loadUserProgress();
         if (document.querySelector('.wrap')?.style.display !== 'block') {
           await showLevelSelection();
@@ -2300,16 +2416,18 @@ async function connectSupabase(retry = 0) {
       window.supabaseClient.auth.onAuthStateChange(async (_event, session) => {
         if (session && session.user) {
           currentUser = session.user;
+          await refreshUserAccessStatus();
           await loadUserProgress();
           if (document.querySelector('.wrap')?.style.display !== 'block') {
             await showLevelSelection();
           }
         } else {
           currentUser = null;
-          // Авторизация отключена для демо-режима: не возвращаем пользователя в меню
-          // во время прохождения уровня при фоновых auth-событиях Supabase.
+          userAccessStatus = 'free';
+          // Демо/freemium-режим: без сессии остаёмся в списке уровней,
+          // а paywall показываем только при попытке открыть платный урок.
           if (document.querySelector('.wrap')?.style.display !== 'block') {
-            showAuthScreen();
+            await showLevelSelection();
           }
         }
       });
@@ -2344,13 +2462,7 @@ async function initializeApp() {
       localStorage.setItem('selectedLanguage', currentLanguage);
     }
 
-    // Очищаем весь прогресс при загрузке
-    if (window.levelManager) {
-      window.levelManager.resetProgress();
-      localStorage.removeItem('userProgress');
-      localStorage.removeItem('completedLevels');
-      localStorage.removeItem('completedExercises');
-    }
+    // Показываем выбор уровней; прогресс не сбрасываем при загрузке.
     
     // Сразу показываем выбор уровней без авторизации
     await showLevelSelection();

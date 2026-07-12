@@ -11,7 +11,7 @@ function createJsonLevelClass(levelId) {
     }
 
     async load() {
-      const response = await fetch(`data/level${levelId}.json`);
+      const response = await fetch(`data/level${levelId}.json?v=20260712-paywall2`);
       if (!response.ok) {
         throw new Error(`Не удалось загрузить data/level${levelId}.json`);
       }

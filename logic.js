@@ -93,9 +93,25 @@ async function createUserProfile(userId, email, language = 'ru') {
       user_id: userId,
       email: email,
       language: language,
+      access_status: 'free',
       created_at: new Date().toISOString()
     })
   
+  if (error && String(error.message || '').includes('access_status')) {
+    const retry = await window.supabaseClient
+      .from('user_profiles')
+      .insert({
+        user_id: userId,
+        email: email,
+        language: language,
+        created_at: new Date().toISOString()
+      })
+    if (retry.error) {
+      console.error('Error creating user profile:', retry.error)
+      return { success: false, error: retry.error }
+    }
+    return { success: true, data: retry.data }
+  }
   if (error) {
     console.error('Error creating user profile:', error)
     return { success: false, error }

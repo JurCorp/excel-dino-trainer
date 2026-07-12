@@ -295,7 +295,7 @@ class LevelManager {
 
   // Получаем список всех уровней (строго 12 штук, без дубликатов)
   getAllLevels() {
-    const customOrder = [1, 2, 3, 7, 4, 10, 8, 5, 6, 9, 11, 12];
+    const customOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const allowedIds = new Set(customOrder);
     const byId = new Map();
     this.levels.forEach((level, levelId) => {

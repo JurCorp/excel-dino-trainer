@@ -706,3 +706,54 @@ button{
   .excel-table td:not(.row-header),
   .excel-table th.col-header { min-width: 58px; max-width: 90px; width: 58px; }
 }
+
+
+/* Paywall */
+.paywall-card {
+  width: 100%;
+  max-width: 620px;
+  margin: 40px auto;
+  text-align: center;
+}
+.paywall-card h2 {
+  margin-top: 0;
+  color: var(--primary);
+}
+.paywall-card p {
+  line-height: 1.5;
+}
+.paywall-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.paywall-note {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.level-item.paywalled {
+  border: 2px dashed rgba(44, 62, 80, 0.25);
+}
+.level-item.paywalled .level-number::after {
+  content: ' 🔒';
+  font-size: 14px;
+}
+.level-badge {
+  display: inline-block;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: rgba(44, 62, 80, 0.08);
+  color: var(--primary);
+}
+.level-badge.free {
+  background: #e8f5e8;
+  color: #1e7e34;
+}
+.level-badge.paid {
+  background: #fff3cd;
+  color: #856404;
+}
