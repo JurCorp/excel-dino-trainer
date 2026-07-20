@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проект «Хронос» — проверка координат</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b0d;
+      --panel: #12171b;
+      --line: #8e1c1c;
+      --text: #e8e5dc;
+      --muted: #969b9d;
+      --green: #78b887;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        var(--bg);
+      background-size: 28px 28px;
+      font-family: "Courier New", Courier, monospace;
+      color: var(--text);
+    }
+
+    main {
+      width: min(680px, 100%);
+      padding: clamp(24px, 5vw, 44px);
+      background: var(--panel);
+      border: 1px solid #343a3e;
+      border-top: 5px solid var(--line);
+      box-shadow: 0 22px 60px rgba(0,0,0,.55);
+    }
+
+    .stamp {
+      display: inline-block;
+      margin-bottom: 26px;
+      padding: 6px 10px;
+      border: 2px solid var(--line);
+      color: #d76464;
+      font-weight: 700;
+      letter-spacing: .12em;
+      transform: rotate(-2deg);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 5vw, 38px);
+      letter-spacing: .06em;
+    }
+
+    .subtitle {
+      margin: 0 0 30px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 9px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+
+    input {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 16px;
+      border: 1px solid #525b60;
+      border-radius: 0;
+      background: #080b0d;
+      color: var(--text);
+      font: inherit;
+      font-size: 17px;
+      outline: none;
+    }
+
+    input:focus { border-color: #b94848; box-shadow: 0 0 0 3px rgba(185,72,72,.18); }
+
+    button {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border: 1px solid #af3e3e;
+      background: #7e2222;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      letter-spacing: .08em;
+      cursor: pointer;
+    }
+
+    button:hover { background: #962b2b; }
+
+    #result {
+      display: none;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px dashed #566066;
+      line-height: 1.65;
+    }
+
+    #result.show { display: block; animation: appear .45s ease-out; }
+    #result h2 { margin: 0 0 16px; color: var(--green); font-size: 21px; }
+    #result p { margin: 0 0 12px; }
+    #result ul { margin: 12px 0 16px; padding-left: 22px; }
+
+    .error { margin-top: 10px; color: #df7171; min-height: 20px; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+    <h1>ПРОЕКТ «ХРОНОС»</h1>
+    <p class="subtitle">Система проверки координат временной аномалии</p>
+
+    <form id="address-form">
+      <label for="address">ВВЕДИТЕ АДРЕС</label>
+      <input id="address" name="address" type="text" autocomplete="street-address" autofocus placeholder="Москва, улица...">
+      <button type="submit">ПРОВЕРИТЬ КООРДИНАТЫ</button>
+      <div id="error" class="error" aria-live="polite"></div>
+    </form>
+
+    <section id="result" aria-live="polite">
+      <h2>КООРДИНАТЫ ПОДТВЕРЖДЕНЫ.</h2>
+      <p>Однако Машина времени в указанной точке не обнаружена.</p>
+      <p>Следы показывают, что подозреваемая не пыталась скрыть устройство. Она пыталась привести оперативную группу к установлению собственной личности.</p>
+      <p><strong>Для завершения расследования необходимо провести визуальную идентификацию похитительницы.</strong></p>
+      <p>Ищите поверхность, которая:</p>
+      <ul>
+        <li>показывает человека в настоящем;</li>
+        <li>меняет правое и левое местами;</li>
+        <li>не сохраняет увиденное.</li>
+      </ul>
+      <p><strong>Встаньте перед ней.</strong></p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('address-form');
+    const input = document.getElementById('address');
+    const error = document.getElementById('error');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!input.value.trim()) {
+        error.textContent = 'АДРЕС НЕ РАСПОЗНАН. ВВЕДИТЕ КООРДИНАТЫ ПОВТОРНО.';
+        result.classList.remove('show');
+        input.focus();
+        return;
+      }
+
+      error.textContent = '';
+      result.classList.add('show');
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+</body>
+</html>
